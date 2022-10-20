@@ -5,6 +5,7 @@ Crypto recommendation service.
 The service provides a recommendation for crypto investment.
 
 Recommendation service:
+
 ● Reads all the prices from the csv files
 
 ● Calculates oldest/newest/min/max for each crypto for the whole month
