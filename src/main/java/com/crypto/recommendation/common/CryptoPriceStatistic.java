@@ -3,12 +3,14 @@ package com.crypto.recommendation.common;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 public class CryptoPriceStatistic {
     private String code;
-    private double min;
-    private double max;
-    private double oldest;
-    private double newest;
+    private BigDecimal min;
+    private BigDecimal max;
+    private BigDecimal oldest;
+    private BigDecimal newest;
 }

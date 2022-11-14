@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +31,9 @@ class CryptoRecommendationsServiceImplTest {
     void shouldGetCryptoListSortedByNormalizedRange() {
         when(cachedCryptoRecordsProvider.read()).thenReturn(getTestMap());
         final List<CryptoNormalizedRange> expectedList = List.of(
-                new CryptoNormalizedRange("BBB", 0.9738372093023259),
-                new CryptoNormalizedRange("AAA", 0.27017174335709654),
-                new CryptoNormalizedRange("CCC", 0.005768692425171931)
+                new CryptoNormalizedRange("BBB", BigDecimal.valueOf(1.0)),
+                new CryptoNormalizedRange("AAA", BigDecimal.valueOf(0.3)),
+                new CryptoNormalizedRange("CCC", BigDecimal.valueOf(0.01))
         );
         final List<CryptoNormalizedRange> cryptoListSortedByNormalizedRange = cryptoRecommendationsService.getCryptoListSortedByNormalizedRange();
 
@@ -52,8 +53,8 @@ class CryptoRecommendationsServiceImplTest {
     void shouldGetCryptoListSortedByNormalizedRangeForTheSameValuesInData() {
         when(cachedCryptoRecordsProvider.read()).thenReturn(getTestMapWithTheSameValues());
         final List<CryptoNormalizedRange> expectedList = List.of(
-                new CryptoNormalizedRange("BBB", 0.0),
-                new CryptoNormalizedRange("AAA", 0.0)
+                new CryptoNormalizedRange("BBB", BigDecimal.valueOf(0.0)),
+                new CryptoNormalizedRange("AAA", BigDecimal.valueOf(0.0))
         );
         final List<CryptoNormalizedRange> cryptoListSortedByNormalizedRange = cryptoRecommendationsService.getCryptoListSortedByNormalizedRange();
         assertThat(expectedList).hasSameElementsAs(cryptoListSortedByNormalizedRange);
@@ -62,7 +63,8 @@ class CryptoRecommendationsServiceImplTest {
     @Test
     void shouldGetCryptoPriceStatisticBy() {
         when(cachedCryptoRecordsProvider.read()).thenReturn(getTestMap());
-        final CryptoPriceStatistic expected = new CryptoPriceStatistic("AAA", 1234.4, 1567.9, 1234.4, 1567.9);
+        final CryptoPriceStatistic expected = new CryptoPriceStatistic("AAA", BigDecimal.valueOf(1234.4),
+                BigDecimal.valueOf(1567.9), BigDecimal.valueOf(1234.4), BigDecimal.valueOf(1567.9));
         final CryptoPriceStatistic result = cryptoRecommendationsService.getCryptoPriceStatisticBy("AAA");
 
         assertEquals(expected, result);
@@ -80,33 +82,33 @@ class CryptoRecommendationsServiceImplTest {
 
     private Map<String, List<CryptoRecord>> getTestMap() {
         return Map.of("AAA", List.of(
-                        new CryptoRecord(1641009600000L, "AAA", 1234.40),
-                        new CryptoRecord(1641009610000L, "AAA", 1345.40),
-                        new CryptoRecord(1641009630000L, "AAA", 1567.90)
+                        new CryptoRecord(1641009600000L, "AAA", BigDecimal.valueOf(1234.40)),
+                        new CryptoRecord(1641009610000L, "AAA", BigDecimal.valueOf(1345.40)),
+                        new CryptoRecord(1641009630000L, "AAA", BigDecimal.valueOf(1567.90))
                 ),
                 "BBB", List.of(
-                        new CryptoRecord(1641009600000L, "BBB", 34.40),
-                        new CryptoRecord(1641009610000L, "BBB", 45.9),
-                        new CryptoRecord(1641009630000L, "BBB", 67.90)
+                        new CryptoRecord(1641009600000L, "BBB", BigDecimal.valueOf(34.40)),
+                        new CryptoRecord(1641009610000L, "BBB", BigDecimal.valueOf(45.9)),
+                        new CryptoRecord(1641009630000L, "BBB", BigDecimal.valueOf(67.90))
                 ),
                 "CCC", List.of(
-                        new CryptoRecord(1641009600000L, "CCC", 95342.23),
-                        new CryptoRecord(1641009610000L, "CCC", 95342.23),
-                        new CryptoRecord(1641009630000L, "CCC", 95892.23)
+                        new CryptoRecord(1641009600000L, "CCC", BigDecimal.valueOf(95342.23)),
+                        new CryptoRecord(1641009610000L, "CCC", BigDecimal.valueOf(95342.23)),
+                        new CryptoRecord(1641009630000L, "CCC", BigDecimal.valueOf(95892.23))
                 )
         );
     }
 
     private Map<String, List<CryptoRecord>> getTestMapWithTheSameValues() {
         return Map.of("AAA", List.of(
-                        new CryptoRecord(1641009600000L, "AAA", 1234.40),
-                        new CryptoRecord(1641009610000L, "AAA", 1234.40),
-                        new CryptoRecord(1641009630000L, "AAA", 1234.40)
+                        new CryptoRecord(1641009600000L, "AAA", BigDecimal.valueOf(1234.40)),
+                        new CryptoRecord(1641009610000L, "AAA", BigDecimal.valueOf(1234.40)),
+                        new CryptoRecord(1641009630000L, "AAA", BigDecimal.valueOf(1234.40))
                 ),
                 "BBB", List.of(
-                        new CryptoRecord(1641009600000L, "BBB", 1234.40),
-                        new CryptoRecord(1641009610000L, "BBB", 1234.40),
-                        new CryptoRecord(1641009630000L, "BBB", 1234.40)
+                        new CryptoRecord(1641009600000L, "BBB", BigDecimal.valueOf(1234.40)),
+                        new CryptoRecord(1641009610000L, "BBB", BigDecimal.valueOf(1234.40)),
+                        new CryptoRecord(1641009630000L, "BBB", BigDecimal.valueOf(1234.40))
                 )
         );
     }

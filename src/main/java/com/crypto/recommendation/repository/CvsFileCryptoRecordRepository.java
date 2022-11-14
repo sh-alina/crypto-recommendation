@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -17,6 +18,9 @@ import java.util.stream.Stream;
 
 import static java.lang.String.format;
 
+/**
+ * Class reads cryptocurrency data from CVS file
+ */
 @Service
 public class CvsFileCryptoRecordRepository implements CryptoRecordRepository {
 
@@ -26,6 +30,9 @@ public class CvsFileCryptoRecordRepository implements CryptoRecordRepository {
         this.directory = directory;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, List<CryptoRecord>> read() {
         Map<String, List<CryptoRecord>> result = new HashMap<>();
@@ -58,7 +65,7 @@ public class CvsFileCryptoRecordRepository implements CryptoRecordRepository {
         return new CryptoRecord(
                 Long.parseLong(arr[0]),
                 arr[1],
-                (Double.parseDouble(arr[2])));
+                (new BigDecimal(arr[2])));
     }
 
     private String getCryptoCode(final Path path) {
